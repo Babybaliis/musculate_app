@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {AntDesign} from '@expo/vector-icons';
 import {FontAwesome5} from '@expo/vector-icons';
 import Home from "../screens/Home";
-import Training from "../screens/Training";
+import MusclesList from "../screens/MusclesList";
 import Setting from "../screens/Setting";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -15,6 +15,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../store/store";
 import {useEffect, useState} from "react";
 import {ActivityIndicator, Image, View} from "react-native";
+import Exercises from "../screens/Exercises";
 
 const HomeStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -24,11 +25,12 @@ const HomeStackScreen = () => (
     </HomeStack.Navigator>
 );
 
-const TrainingStack = createNativeStackNavigator();
-const TrainingStackScreen = () => (
-    <TrainingStack.Navigator>
-        <TrainingStack.Screen name={screenNames.TRAINING} component={Training}/>
-    </TrainingStack.Navigator>
+const DirectoryStack = createNativeStackNavigator();
+const DirectoryStackScreen = () => (
+    <DirectoryStack.Navigator>
+        <DirectoryStack.Screen name={screenNames.MUSCULATURE_lIST} component={MusclesList}/>
+        <DirectoryStack.Screen name={screenNames.EXERCISES} component={Exercises}/>
+    </DirectoryStack.Navigator>
 );
 
 const SettingStack = createNativeStackNavigator();
@@ -51,7 +53,7 @@ export const TabNavigate = () => {
     const getIcon = (route: any, color: string) => {
         if (route.name === screenNames.HOME) {
             return <FontAwesome5 name="dumbbell" size={24} color={color}/>;
-        } else if (route.name === screenNames.TRAINING) {
+        } else if (route.name === screenNames.MUSCULATURE_lIST) {
             return <AntDesign name="book" size={24} color={color}/>;
         } else if (route.name === screenNames.SETTING) {
             return <AntDesign name="setting" size={24} color={color}/>;
@@ -72,8 +74,8 @@ export const TabNavigate = () => {
                 component={HomeStackScreen}
             />
             <Tab.Screen
-                name={screenNames.TRAINING}
-                component={TrainingStackScreen}
+                name={screenNames.MUSCULATURE_lIST}
+                component={DirectoryStackScreen}
             />
             <Tab.Screen
                 name={screenNames.SETTING}
