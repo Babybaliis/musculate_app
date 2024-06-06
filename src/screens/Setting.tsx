@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Switch} from 'react-native-switch'
 import Registration from "./Registration";
@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {toggleTheme} from '../store/hooks/themeSlice';
 import {RootState} from '../store/store';
 import ScreenNames from '../constants/navigations';
+import userApi from "../api/userApi";
 
 type RootStackParamList = {
     [ScreenNames.PROFILE]: { userId: number };
@@ -18,16 +19,24 @@ type ProfileScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
     ScreenNames.PROFILE
 >;
-const Setting = () => {
+const Setting = ({navigation}) => {
     const isDarkTheme = useSelector((state: RootState) => state.theme.value);
     const colors = getThemeColors(isDarkTheme);
-    const navigation = useNavigation<ProfileScreenNavigationProp>();
     const dispatch = useDispatch();
+    const [userId, setUserId] = useState()
+
+    useEffect(() => {
+        userApi.getUserId()
+            .then((res)=> {
+                setUserId(res)
+                console.log('res:',res)
+            })
+    }, []);
 
     const isAuth = true;
     return (
         <View style={{...styles.container, backgroundColor: colors.homeBG}}>
-            {isAuth ? <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.PROFILE, {userId: 1})}
+            {isAuth ? <TouchableOpacity onPress={() => navigation.navigate(ScreenNames.PROFILE, {userId: userId})}
                                         style={{...styles.button, backgroundColor: colors.app_color_primary}}>
                     <Text style={{
                         ...styles.buttonText,
@@ -35,7 +44,7 @@ const Setting = () => {
                     }}>Профиль</Text>
                 </TouchableOpacity>
                 :
-                <TouchableOpacity onPress={Registration}
+                <TouchableOpacity onPress={() => navigation.navigate('Регистрация', {userId: userId})}
                                   style={{
                                       ...styles.button,
                                       backgroundColor: colors.app_color_primary,

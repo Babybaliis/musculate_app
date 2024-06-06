@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, TextInput, Button, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {signIn} from '../api/api';
+import {signIn} from '../api/loginApi';
 import {getThemeColors} from "../constants/colors";
 import ScreenNames from "../constants/navigations";
 import {useNavigation} from "@react-navigation/native";
@@ -11,24 +11,13 @@ import {JwtAuthenticationResponse} from "../../musculate-app";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {setToken} from "../store/hooks/authSlice";
 
-
-type RootStackParamList = {
-    [ScreenNames.REGISTRATION]: {};
-    Home: {}; // Добавьте эту строку
-};
-
-type RegistrationScreenNavigationProp = StackNavigationProp<
-    RootStackParamList,
-    ScreenNames.REGISTRATION
->;
-
-const Login = () => {
+const Login = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const isDarkTheme = useSelector((state: RootState) => state.theme.value);
     const dispatch = useDispatch();
     const colors = getThemeColors(isDarkTheme);
-    const navigation = useNavigation<RegistrationScreenNavigationProp>();
+
 
     useEffect(() => {
         const checkAuthStatus = async () => {

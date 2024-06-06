@@ -2,32 +2,21 @@
 import React, {useState} from 'react';
 import {View, TextInput, Button, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {signUp} from '../api/api';
+import {signUp} from '../api/loginApi';
 import {setToken} from '../store/hooks/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ScreenNames from "../constants/navigations";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {useNavigation} from "@react-navigation/native";
 import {RootState} from "../store/store";
 import {getThemeColors} from "../constants/colors";
 import {JwtAuthenticationResponse} from "../../musculate-app";
 
-type RootStackParamList = {
-    [ScreenNames.LOGIN]: {};
-};
-
-type LoginScreenNavigationProp = StackNavigationProp<
-    RootStackParamList,
-    ScreenNames.LOGIN
->;
-const Registration = () => {
+const Registration = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const dispatch = useDispatch();
     const isDarkTheme = useSelector((state: RootState) => state.theme.value);
     const colors = getThemeColors(isDarkTheme);
-    const navigation = useNavigation<LoginScreenNavigationProp>();
+
 
     const handleRegistration = async () => {
         try {

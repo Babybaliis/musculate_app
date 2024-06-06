@@ -4,8 +4,9 @@ import {useDispatch} from 'react-redux';
 import {removeToken} from '../store/hooks/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Profile = () => {
+const Profile = ({route}) => {
     const dispatch = useDispatch();
+    const { userId } = route.params;
 
     const handleLogout = async () => {
         await AsyncStorage.removeItem('accessToken');
